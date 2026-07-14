@@ -17,14 +17,8 @@ export class AnalyticsService {
 
     // Calculate totals
     const totalInvoices = invoices.length;
-    const totalAmount = invoices.reduce(
-      (sum, inv) => sum + BigInt(inv.amount),
-      BigInt(0),
-    );
-    const totalPaid = invoices.reduce(
-      (sum, inv) => sum + BigInt(inv.paidAmount),
-      BigInt(0),
-    );
+    const totalAmount = invoices.reduce((sum, inv) => sum + BigInt(inv.amount), BigInt(0));
+    const totalPaid = invoices.reduce((sum, inv) => sum + BigInt(inv.paidAmount), BigInt(0));
     const paidInvoices = invoices.filter((inv) => inv.status === 'paid').length;
 
     // Calculate payment rate
@@ -34,8 +28,7 @@ export class AnalyticsService {
     }
 
     // Average amount
-    const averageAmount =
-      totalInvoices > 0 ? totalAmount / BigInt(totalInvoices) : BigInt(0);
+    const averageAmount = totalInvoices > 0 ? totalAmount / BigInt(totalInvoices) : BigInt(0);
 
     return {
       issuerAddress: issuerAddress || 'all',
@@ -58,7 +51,7 @@ export class AnalyticsService {
       where,
     });
 
-    const breakdown = {
+    const breakdown: Record<string, number> = {
       issued: 0,
       partial: 0,
       paid: 0,
@@ -67,7 +60,9 @@ export class AnalyticsService {
     };
 
     for (const invoice of invoices) {
-      breakdown[invoice.status]++;
+      if (invoice.status in breakdown) {
+        breakdown[invoice.status]++;
+      }
     }
 
     return {

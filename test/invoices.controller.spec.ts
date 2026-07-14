@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { InvoicesController } from '../src/invoices/invoices.controller';
 import { InvoicesService } from '../src/invoices/invoices.service';
 import { PrismaService } from '../src/common/prisma/prisma.service';
@@ -8,8 +8,6 @@ import { SorobanService } from '../src/common/soroban/soroban.service';
 
 describe('Invoices API', () => {
   let app: INestApplication;
-  let invoicesService: InvoicesService;
-  let prismaService: PrismaService;
 
   const mockPrismaService = {
     invoice: {
@@ -49,9 +47,6 @@ describe('Invoices API', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
-
-    invoicesService = moduleFixture.get<InvoicesService>(InvoicesService);
-    prismaService = moduleFixture.get<PrismaService>(PrismaService);
   });
 
   afterAll(async () => {
@@ -77,18 +72,14 @@ describe('Invoices API', () => {
 
       mockPrismaService.invoice.findMany.mockResolvedValue(mockInvoices);
 
-      const response = await request(app.getHttpServer())
-        .get('/invoices?address=GADDR1')
-        .expect(200);
+      const response = await request(app.getHttpServer()).get('/invoices?address=GADDR1').expect(200);
 
       expect(response.body.count).toBe(1);
       expect(response.body.invoices).toEqual(mockInvoices);
     });
 
     it('should require address parameter', async () => {
-      await request(app.getHttpServer())
-        .get('/invoices')
-        .expect(400);
+      await request(app.getHttpServer()).get('/invoices').expect(400);
     });
 
     it('should filter by role (issuer)', async () => {
@@ -103,9 +94,7 @@ describe('Invoices API', () => {
 
       mockPrismaService.invoice.findMany.mockResolvedValue(mockInvoices);
 
-      const response = await request(app.getHttpServer())
-        .get('/invoices?address=GADDR1&role=issuer')
-        .expect(200);
+      const response = await request(app.getHttpServer()).get('/invoices?address=GADDR1&role=issuer').expect(200);
 
       expect(response.body.count).toBe(1);
     });
@@ -125,9 +114,7 @@ describe('Invoices API', () => {
 
       mockPrismaService.invoice.findUnique.mockResolvedValue(mockInvoice);
 
-      const response = await request(app.getHttpServer())
-        .get('/invoices/inv-1')
-        .expect(200);
+      const response = await request(app.getHttpServer()).get('/invoices/inv-1').expect(200);
 
       expect(response.body).toEqual(mockInvoice);
     });
@@ -135,9 +122,7 @@ describe('Invoices API', () => {
     it('should return 404 for non-existent invoice', async () => {
       mockPrismaService.invoice.findUnique.mockResolvedValue(null);
 
-      await request(app.getHttpServer())
-        .get('/invoices/nonexistent')
-        .expect(404);
+      await request(app.getHttpServer()).get('/invoices/nonexistent').expect(404);
     });
   });
 
@@ -155,9 +140,7 @@ describe('Invoices API', () => {
 
       mockPrismaService.invoice.findUnique.mockResolvedValue(mockInvoice);
 
-      const response = await request(app.getHttpServer())
-        .get('/invoices/inv-1/public')
-        .expect(200);
+      const response = await request(app.getHttpServer()).get('/invoices/inv-1/public').expect(200);
 
       expect(response.body.id).toBe('inv-1');
       expect(response.body.amountScaled).toBe('100.00');
@@ -183,9 +166,7 @@ describe('Invoices API', () => {
         id: 'log-1',
       });
 
-      const response = await request(app.getHttpServer())
-        .post('/invoices/inv-1/verify')
-        .expect(201);
+      const response = await request(app.getHttpServer()).post('/invoices/inv-1/verify').expect(201);
 
       expect(response.body.verified).toBe(true);
     });
@@ -208,9 +189,7 @@ describe('Invoices API', () => {
         id: 'log-1',
       });
 
-      const response = await request(app.getHttpServer())
-        .post('/invoices/inv-1/verify')
-        .expect(201);
+      const response = await request(app.getHttpServer()).post('/invoices/inv-1/verify').expect(201);
 
       expect(response.body.verified).toBe(false);
       expect(response.body.indexedStatus).toBe('issued');

@@ -30,13 +30,8 @@ export class SorobanService {
     }
   }
 
-  async fetchInvoiceState(
-    contractId: string,
-    invoiceId: string,
-  ): Promise<any> {
-    this.logger.debug(
-      `Fetching invoice state from contract: ${contractId}, invoiceId: ${invoiceId}`,
-    );
+  async fetchInvoiceState(contractId: string, invoiceId: string): Promise<any> {
+    this.logger.debug(`Fetching invoice state from contract: ${contractId}, invoiceId: ${invoiceId}`);
 
     // TODO: Replace with actual Soroban RPC call
     // const result = await this.callSorobanRpc('getContractData', { contractId, key: invoiceId });
@@ -50,13 +45,8 @@ export class SorobanService {
     };
   }
 
-  async subscribeToContractEvents(
-    contractId: string,
-    onEvent: (event: any) => Promise<void>,
-  ): Promise<void> {
-    this.logger.warn(
-      `Soroban event subscription not yet implemented. Contract: ${contractId}`,
-    );
+  async subscribeToContractEvents(contractId: string, _onEvent: (event: any) => Promise<void>): Promise<void> {
+    this.logger.warn(`Soroban event subscription not yet implemented. Contract: ${contractId}`);
 
     // TODO: Implement event subscription via Horizon WebSocket
     // - Connect to Horizon WebSocket
@@ -70,12 +60,12 @@ export class SorobanService {
     return 0;
   }
 
-  private async callSorobanRpc(method: string, params: any): Promise<any> {
+  private async callSorobanRpc(_method: string, _params: any): Promise<any> {
     // TODO: Implement JSON-RPC call to Soroban RPC endpoint
     throw new Error('Soroban RPC integration not yet implemented');
   }
 
-  private parseInvoiceState(contractData: any): any {
+  private parseInvoiceState(_contractData: any): any {
     // TODO: Parse XDR/contract state blob into readable invoice format
     throw new Error('Contract state parsing not yet implemented');
   }

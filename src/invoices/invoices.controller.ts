@@ -6,10 +6,7 @@ export class InvoicesController {
   constructor(private readonly invoicesService: InvoicesService) {}
 
   @Get()
-  async listInvoices(
-    @Query('address') address?: string,
-    @Query('role') role?: string,
-  ) {
+  async listInvoices(@Query('address') address?: string, @Query('role') role?: string) {
     return this.invoicesService.listInvoices(address, role);
   }
 
