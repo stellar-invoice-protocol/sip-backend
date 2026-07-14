@@ -18,6 +18,18 @@ export class SorobanService {
   private readonly rpcUrl = process.env.SOROBAN_RPC_URL;
   private readonly contractId = process.env.CONTRACT_ID;
 
+  async checkConnection(): Promise<string> {
+    if (!this.rpcUrl) {
+      return 'not_configured';
+    }
+    try {
+      new URL(this.rpcUrl);
+      return 'connected';
+    } catch (e) {
+      return 'invalid_rpc_url';
+    }
+  }
+
   async fetchInvoiceState(
     contractId: string,
     invoiceId: string,
