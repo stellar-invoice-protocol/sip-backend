@@ -140,6 +140,25 @@ sip-backend/
 
 ## API Reference
 
+### GET /health
+
+Check the health status of the backend, database connection, and Soroban RPC.
+
+**Example**:
+```bash
+curl http://localhost:3000/health
+```
+
+**Response** (200 OK):
+```json
+{
+  "status": "healthy",
+  "database": "connected",
+  "soroban": "connected",
+  "timestamp": "2026-07-14T12:00:00Z"
+}
+```
+
 ### GET /invoices
 
 List invoices for an address.

@@ -144,6 +144,16 @@ export class InvoicesService {
     );
   }
 
+  async getDiagnostics() {
+    const totalInvoices = await this.prisma.invoice.count();
+    const activeSorobanUrl = process.env.SOROBAN_RPC_URL || 'not_configured';
+    return {
+      totalIndexedInvoices: totalInvoices,
+      sorobanRpcUrl: activeSorobanUrl,
+      indexerState: process.env.DISABLE_INDEXER === 'true' ? 'disabled' : 'active',
+    };
+  }
+
   async createInvoiceFromChain(contractId: string, onChainData: any) {
     return this.prisma.invoice.upsert({
       where: {

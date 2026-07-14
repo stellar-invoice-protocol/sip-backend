@@ -23,6 +23,11 @@ export class InvoicesController {
     return this.invoicesService.getPublicInvoiceData(id);
   }
 
+  @Get('diagnostics/health')
+  async getDiagnostics() {
+    return this.invoicesService.getDiagnostics();
+  }
+
   @Post(':id/verify')
   async verifyInvoiceAgainstChain(@Param('id') id: string) {
     return this.invoicesService.verifyInvoiceAgainstChain(id);
