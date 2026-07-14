@@ -95,8 +95,8 @@ export class NotificationsService implements OnModuleInit {
       const subject = `Invoice Reminder: ${invoice.onChainId}`;
       const body = `
         Invoice ${invoice.onChainId} is due in ${Math.ceil(
-        (invoice.dueDate - new Date()) / (1000 * 60 * 60 * 24),
-      )} days.
+          (invoice.dueDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24),
+        )} days.
         Amount: ${invoice.amountScaled} ${invoice.currency}
         Due: ${invoice.dueDate.toLocaleDateString()}
       `;
@@ -125,7 +125,7 @@ export class NotificationsService implements OnModuleInit {
           invoiceId: invoice.id,
           type: 'reminder',
           recipientEmail: 'unknown',
-          failureReason: error.message,
+          failureReason: error instanceof Error ? error.message : String(error),
         },
       });
     }
@@ -175,17 +175,14 @@ export class NotificationsService implements OnModuleInit {
 
       this.logger.log(`Overdue notification sent for invoice ${invoice.id}`);
     } catch (error) {
-      this.logger.error(
-        `Failed to send overdue notification for invoice ${invoice.id}:`,
-        error,
-      );
+      this.logger.error(`Failed to send overdue notification for invoice ${invoice.id}:`, error);
 
       await this.prisma.notification.create({
         data: {
           invoiceId: invoice.id,
           type: 'overdue',
           recipientEmail: 'unknown',
-          failureReason: error.message,
+          failureReason: error instanceof Error ? error.message : String(error),
         },
       });
     }

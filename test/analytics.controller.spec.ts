@@ -97,12 +97,7 @@ describe('Analytics API', () => {
 
   describe('getStatusBreakdown', () => {
     it('should return status breakdown', async () => {
-      const mockInvoices = [
-        { status: 'issued' },
-        { status: 'issued' },
-        { status: 'paid' },
-        { status: 'partial' },
-      ];
+      const mockInvoices = [{ status: 'issued' }, { status: 'issued' }, { status: 'paid' }, { status: 'partial' }];
 
       mockPrismaService.invoice.findMany.mockResolvedValue(mockInvoices);
 

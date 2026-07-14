@@ -19,9 +19,10 @@ export class HealthController {
     }
 
     // Call checkConnection on SorobanService if it exists
-    const sorobanStatus = typeof (this.soroban as any).checkConnection === 'function' 
-      ? await (this.soroban as any).checkConnection() 
-      : 'stub';
+    const sorobanStatus =
+      typeof (this.soroban as any).checkConnection === 'function'
+        ? await (this.soroban as any).checkConnection()
+        : 'stub';
 
     return {
       status: dbStatus === 'connected' ? 'healthy' : 'unhealthy',

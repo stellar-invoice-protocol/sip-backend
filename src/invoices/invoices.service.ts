@@ -98,10 +98,7 @@ export class InvoicesService {
     try {
       // TODO: Implement actual Soroban RPC call to fetch on-chain state
       // This is stubbed pending full Soroban RPC integration
-      const chainState = await this.soroban.fetchInvoiceState(
-        invoice.contractId,
-        invoice.onChainId,
-      );
+      const chainState = await this.soroban.fetchInvoiceState(invoice.contractId, invoice.onChainId);
 
       const matches = this.compareWithIndexed(invoice, chainState);
 
@@ -118,16 +115,14 @@ export class InvoicesService {
         verified: matches,
         indexedStatus: invoice.status,
         chainStatus: chainState?.status || 'unknown',
-        message: matches
-          ? 'Indexed state matches chain'
-          : 'Mismatch detected between indexed state and chain',
+        message: matches ? 'Indexed state matches chain' : 'Mismatch detected between indexed state and chain',
       };
     } catch (error) {
       await this.prisma.syncLog.create({
         data: {
           invoiceId: id,
           action: 'verified',
-          error: error.message,
+          error: error instanceof Error ? error.message : String(error),
         },
       });
 
@@ -138,10 +133,7 @@ export class InvoicesService {
   private compareWithIndexed(invoiceRecord: any, chainState: any): boolean {
     if (!chainState) return false;
     // Simple comparison: check status and key fields
-    return (
-      invoiceRecord.status === chainState.status &&
-      invoiceRecord.paidAmount === chainState.paidAmount
-    );
+    return invoiceRecord.status === chainState.status && invoiceRecord.paidAmount === chainState.paidAmount;
   }
 
   async getDiagnostics() {

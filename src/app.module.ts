@@ -24,4 +24,3 @@ import { SorobanModule } from './common/soroban/soroban.module';
   controllers: [HealthController],
 })
 export class AppModule {}
-
