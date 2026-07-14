@@ -1,0 +1,122 @@
+// prisma/schema.prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Track the last processed ledger to avoid re-indexing
+model IndexerCursor {
+  id                Int     @id @default(autoincrement())
+  lastProcessedLedger Int   @default(0)
+  lastProcessedSeq  Int     @default(0)
+  updatedAt         DateTime @updatedAt
+
+  @@map("indexer_cursors")
+}
+
+// Core Invoice model mirroring on-chain state
+model Invoice {
+  id                String    @id @default(cuid())
+  
+  // Contract-level identifiers
+  contractId        String    // Soroban contract address
+  onChainId         String    // Invoice ID from contract
+  
+  // Parties
+  issuerAddress     String    // Invoice issuer (Stellar address)
+  payerAddress      String    // Invoice recipient/payer
+  
+  // Invoice details
+  amount            String    // Amount in stroops (stored as string for precision)
+  amountScaled      String    // Human-readable amount
+  currency          String    @default("native")
+  description       String?
+  
+  // Dates
+  issuedAt          DateTime
+  dueDate           DateTime
+  
+  // Status
+  status            String    @default("issued")  // issued, partial, paid, overdue, cancelled
+  paidAmount        String    @default("0")
+  
+  // Metadata
+  metadata          String?   // JSON serialized metadata
+  
+  // Indexing metadata
+  lastSyncedAt      DateTime  @updatedAt
+  syncedFromChain   Boolean   @default(false)
+  lastChainStatus   String?   // Last confirmed status from chain
+  
+  // Relations
+  payments          Payment[]
+  syncLogs          SyncLog[]
+  notifications     Notification[]
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@index([issuerAddress])
+  @@index([payerAddress])
+  @@index([status])
+  @@index([dueDate])
+  @@unique([contractId, onChainId])
+  @@map("invoices")
+}
+
+// Payment records
+model Payment {
+  id                String    @id @default(cuid())
+  invoiceId         String
+  invoice           Invoice   @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  
+  amount            String    // Amount paid in stroops
+  transactionHash   String?   // Soroban TX hash
+  paymentDate       DateTime
+  
+  createdAt         DateTime  @default(now())
+  
+  @@index([invoiceId])
+  @@map("payments")
+}
+
+// Sync log for debugging indexer issues
+model SyncLog {
+  id                String    @id @default(cuid())
+  invoiceId         String
+  invoice           Invoice   @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  
+  action            String    // created, updated, verified
+  previousState     String?   // JSON
+  newState          String?   // JSON
+  error             String?
+  
+  createdAt         DateTime  @default(now())
+  
+  @@index([invoiceId])
+  @@index([createdAt])
+  @@map("sync_logs")
+}
+
+// Notification tracking
+model Notification {
+  id                String    @id @default(cuid())
+  invoiceId         String
+  invoice           Invoice   @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  
+  type              String    // reminder, overdue, paid
+  recipientEmail    String
+  sentAt            DateTime?
+  failureReason     String?
+  
+  createdAt         DateTime  @default(now())
+  
+  @@index([invoiceId])
+  @@index([type])
+  @@index([sentAt])
+  @@map("notifications")
+}

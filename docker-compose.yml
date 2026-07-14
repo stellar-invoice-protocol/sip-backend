@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: sip-backend-db
+    environment:
+      POSTGRES_USER: sip_user
+      POSTGRES_PASSWORD: sip_password
+      POSTGRES_DB: sip_backend_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sip_user -d sip_backend_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sip-backend-app
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://sip_user:sip_password@postgres:5432/sip_backend_db
+      PORT: 3000
+      SOROBAN_RPC_URL: https://rpc-futurenet.stellar.org:443
+      CONTRACT_ID: CAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      DISABLE_INDEXER: "false"
+      DISABLE_NOTIFICATIONS: "false"
+      EMAIL_TRANSPORT: console
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: sh -c "npm run db:migrate && npm run start"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
