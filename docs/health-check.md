@@ -17,3 +17,7 @@ Clients should inspect the response body instead of relying only on the HTTP sta
 `status` is `unhealthy` when the database query fails.
 
 Soroban configuration does not currently change the overall `status` value.
+
+## Database status
+
+`database: connected` means the service completed a `SELECT 1` query.
