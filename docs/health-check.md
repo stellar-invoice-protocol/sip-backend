@@ -112,3 +112,7 @@ The endpoint integration tests live in `test/health.controller.spec.ts`.
 Run the health tests with `npm test -- --runInBand test/health.controller.spec.ts`.
 
 Run `npm run build` to verify the controller and service compile.
+
+## Troubleshooting
+
+If the endpoint is unreachable, confirm the application process and configured `PORT`.
