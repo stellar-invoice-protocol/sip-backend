@@ -35,3 +35,5 @@ The response intentionally omits the database error message to avoid exposing in
 `invalid_rpc_url` means the configured value is not a valid URL.
 
 `configured` does not prove that the remote RPC service is reachable.
+
+A future live RPC probe may introduce a separate connectivity status.
