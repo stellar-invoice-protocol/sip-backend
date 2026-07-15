@@ -13,3 +13,5 @@ Clients should inspect the response body instead of relying only on the HTTP sta
 ## Overall status
 
 `status` is `healthy` when the database query succeeds.
+
+`status` is `unhealthy` when the database query fails.
