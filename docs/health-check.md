@@ -15,3 +15,5 @@ Clients should inspect the response body instead of relying only on the HTTP sta
 `status` is `healthy` when the database query succeeds.
 
 `status` is `unhealthy` when the database query fails.
+
+Soroban configuration does not currently change the overall `status` value.
