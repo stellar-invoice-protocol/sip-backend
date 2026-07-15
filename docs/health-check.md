@@ -72,3 +72,5 @@ Response field names are stable, but consumers should tolerate additional fields
 Set `SOROBAN_RPC_URL` in `.env` to expose the `configured` status.
 
 The value must include a URL scheme such as `https://`.
+
+Restart the application after changing `.env` so the service reads the new value.
