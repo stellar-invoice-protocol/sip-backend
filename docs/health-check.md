@@ -64,3 +64,5 @@ The default local port is `3000`, unless `PORT` overrides it.
   "timestamp": "2026-07-15T00:00:00.000Z"
 }
 ```
+
+Response field names are stable, but consumers should tolerate additional fields.
