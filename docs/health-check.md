@@ -45,3 +45,9 @@ A future live RPC probe may introduce a separate connectivity status.
 Consumers can use the timestamp to detect stale cached responses.
 
 The endpoint does not intentionally cache its result.
+
+## Example request
+
+```bash
+curl --fail-with-body http://localhost:3000/health
+```
