@@ -37,3 +37,7 @@ The response intentionally omits the database error message to avoid exposing in
 `configured` does not prove that the remote RPC service is reachable.
 
 A future live RPC probe may introduce a separate connectivity status.
+
+## Timestamp
+
+`timestamp` is generated in ISO 8601 UTC format for every response.
