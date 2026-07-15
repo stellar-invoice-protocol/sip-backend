@@ -9,3 +9,7 @@ Send a `GET` request to `/health`; the endpoint does not require a request body.
 The endpoint currently returns HTTP `200` for both healthy and unhealthy database states.
 
 Clients should inspect the response body instead of relying only on the HTTP status code.
+
+## Overall status
+
+`status` is `healthy` when the database query succeeds.
