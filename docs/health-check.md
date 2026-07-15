@@ -80,3 +80,5 @@ The database status uses the connection configured by `DATABASE_URL`.
 ## Docker Compose
 
 The Compose application container probes `/health` with `curl`.
+
+The probe runs every 30 seconds after a 10-second startup delay.
