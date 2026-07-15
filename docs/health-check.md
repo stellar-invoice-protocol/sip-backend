@@ -86,3 +86,7 @@ The probe runs every 30 seconds after a 10-second startup delay.
 Three consecutive probe failures mark the application container unhealthy.
 
 Because the route returns `200` for database failures, the current Compose probe checks process availability rather than database readiness.
+
+## Monitoring
+
+Alert when `database` remains `disconnected` across repeated checks.
