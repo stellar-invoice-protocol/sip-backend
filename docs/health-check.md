@@ -33,3 +33,5 @@ The response intentionally omits the database error message to avoid exposing in
 `not_configured` means `SOROBAN_RPC_URL` is absent.
 
 `invalid_rpc_url` means the configured value is not a valid URL.
+
+`configured` does not prove that the remote RPC service is reachable.
