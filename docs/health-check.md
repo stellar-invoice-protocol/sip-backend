@@ -92,3 +92,5 @@ Because the route returns `200` for database failures, the current Compose probe
 Alert when `database` remains `disconnected` across repeated checks.
 
 Do not interpret `soroban: configured` as an RPC latency or availability signal.
+
+Record the response timestamp with monitoring samples to simplify incident timelines.
