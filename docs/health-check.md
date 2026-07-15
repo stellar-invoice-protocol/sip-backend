@@ -43,3 +43,5 @@ A future live RPC probe may introduce a separate connectivity status.
 `timestamp` is generated in ISO 8601 UTC format for every response.
 
 Consumers can use the timestamp to detect stale cached responses.
+
+The endpoint does not intentionally cache its result.
