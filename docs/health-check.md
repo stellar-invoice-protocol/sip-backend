@@ -116,3 +116,5 @@ Run `npm run build` to verify the controller and service compile.
 ## Troubleshooting
 
 If the endpoint is unreachable, confirm the application process and configured `PORT`.
+
+If `database` is `disconnected`, verify PostgreSQL availability and `DATABASE_URL`.
