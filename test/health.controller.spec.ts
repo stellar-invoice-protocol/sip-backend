@@ -45,24 +45,24 @@ describe('HealthController', () => {
 
   it('GET /health - healthy state', async () => {
     mockPrismaService.$queryRaw.mockResolvedValue([1]);
-    mockSorobanService.checkConnection.mockResolvedValue('connected');
+    mockSorobanService.checkConnection.mockResolvedValue('configured');
 
     const response = await request(app.getHttpServer()).get('/health').expect(200);
 
     expect(response.body.status).toBe('healthy');
     expect(response.body.database).toBe('connected');
-    expect(response.body.soroban).toBe('connected');
+    expect(response.body.soroban).toBe('configured');
     expect(response.body.timestamp).toBeDefined();
   });
 
   it('GET /health - unhealthy state due to database disconnect', async () => {
     mockPrismaService.$queryRaw.mockRejectedValue(new Error('Db error'));
-    mockSorobanService.checkConnection.mockResolvedValue('connected');
+    mockSorobanService.checkConnection.mockResolvedValue('configured');
 
     const response = await request(app.getHttpServer()).get('/health').expect(200);
 
     expect(response.body.status).toBe('unhealthy');
     expect(response.body.database).toBe('disconnected');
-    expect(response.body.soroban).toBe('connected');
+    expect(response.body.soroban).toBe('configured');
   });
 });
