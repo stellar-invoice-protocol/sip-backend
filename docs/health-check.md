@@ -110,3 +110,5 @@ Review network exposure before making the unauthenticated endpoint publicly reac
 The endpoint integration tests live in `test/health.controller.spec.ts`.
 
 Run the health tests with `npm test -- --runInBand test/health.controller.spec.ts`.
+
+Run `npm run build` to verify the controller and service compile.
