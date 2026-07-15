@@ -23,3 +23,5 @@ Soroban configuration does not currently change the overall `status` value.
 `database: connected` means the service completed a `SELECT 1` query.
 
 `database: disconnected` means that query threw an error.
+
+The response intentionally omits the database error message to avoid exposing internal details.
