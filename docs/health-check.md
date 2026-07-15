@@ -25,3 +25,7 @@ Soroban configuration does not currently change the overall `status` value.
 `database: disconnected` means that query threw an error.
 
 The response intentionally omits the database error message to avoid exposing internal details.
+
+## Soroban status
+
+`configured` means `SOROBAN_RPC_URL` is present and parses as a URL.
