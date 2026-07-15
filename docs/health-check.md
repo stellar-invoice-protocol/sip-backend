@@ -102,3 +102,5 @@ Use a short client timeout so a stalled process is detected even when no respons
 The payload contains status labels only and does not include credentials.
 
 Keep database URLs and RPC credentials out of health responses and monitoring logs.
+
+Review network exposure before making the unauthenticated endpoint publicly reachable.
