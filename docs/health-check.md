@@ -51,3 +51,5 @@ The endpoint does not intentionally cache its result.
 ```bash
 curl --fail-with-body http://localhost:3000/health
 ```
+
+The default local port is `3000`, unless `PORT` overrides it.
