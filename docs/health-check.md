@@ -2,8 +2,10 @@
 
 The health endpoint exposes a compact snapshot of the API's database health and Soroban RPC configuration.
 
-+## Request
+## Request
 
 Send a `GET` request to `/health`; the endpoint does not require a request body.
 
-+The endpoint currently returns HTTP `200` for both healthy and unhealthy database states.
+The endpoint currently returns HTTP `200` for both healthy and unhealthy database states.
+
+Clients should inspect the response body instead of relying only on the HTTP status code.
