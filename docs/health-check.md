@@ -53,3 +53,14 @@ curl --fail-with-body http://localhost:3000/health
 ```
 
 The default local port is `3000`, unless `PORT` overrides it.
+
+## Example response
+
+```json
+{
+  "status": "healthy",
+  "database": "connected",
+  "soroban": "configured",
+  "timestamp": "2026-07-15T00:00:00.000Z"
+}
+```
