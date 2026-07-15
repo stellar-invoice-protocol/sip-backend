@@ -142,7 +142,7 @@ sip-backend/
 
 ### GET /health
 
-Check the health status of the backend, database connection, and Soroban RPC.
+Check the health status of the backend and database, plus the Soroban RPC configuration status.
 
 **Example**:
 ```bash
@@ -154,7 +154,7 @@ curl http://localhost:3000/health
 {
   "status": "healthy",
   "database": "connected",
-  "soroban": "connected",
+  "soroban": "configured",
   "timestamp": "2026-07-14T12:00:00Z"
 }
 ```
