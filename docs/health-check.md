@@ -94,3 +94,5 @@ Alert when `database` remains `disconnected` across repeated checks.
 Do not interpret `soroban: configured` as an RPC latency or availability signal.
 
 Record the response timestamp with monitoring samples to simplify incident timelines.
+
+Use a short client timeout so a stalled process is detected even when no response is returned.
