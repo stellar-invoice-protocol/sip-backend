@@ -4,10 +4,11 @@ import { SorobanService } from '../common/soroban/soroban.service';
 
 @Injectable()
 export class InvoicesService {
-  constructor(
-    private prisma: PrismaService,
-    private soroban: SorobanService,
-  ) {}
+constructor(
+  private prisma: PrismaService,
+  private soroban: SorobanService,
+  private webhooksService: WebhooksService,   // ← new
+) {}
 
   async listInvoices(address?: string, role?: string) {
     if (!address) {
@@ -146,8 +147,11 @@ export class InvoicesService {
     };
   }
 
-  async createInvoiceFromChain(contractId: string, onChainData: any) {
-    return this.prisma.invoice.upsert({
+ async createInvoiceFromChain(contractId: string, onChainData: any) {
+  const previous = await this.prisma.invoice.findUnique({
+    where: { contractId_onChainId: { contractId, onChainId: onChainData.id } },
+  });
+   const invoice = await this.prisma.invoice.upsert({
       where: {
         contractId_onChainId: {
           contractId,
@@ -175,5 +179,14 @@ export class InvoicesService {
         syncedFromChain: true,
       },
     });
+
+    
+// Trigger webhook if status changed
+  if (previous && previous.status !== invoice.status) {
+    await this.webhooksService.notifyStatusChange(invoice, invoice.status);
   }
+
+  return invoice;
+  }
+
 }
