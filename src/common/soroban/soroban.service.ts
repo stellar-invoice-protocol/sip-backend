@@ -24,7 +24,7 @@ export class SorobanService {
     }
     try {
       new URL(this.rpcUrl);
-      return 'connected';
+      return 'configured';
     } catch (e) {
       return 'invalid_rpc_url';
     }
