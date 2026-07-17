@@ -27,4 +27,16 @@ export class InvoicesController {
   async verifyInvoiceAgainstChain(@Param('id') id: string) {
     return this.invoicesService.verifyInvoiceAgainstChain(id);
   }
+
+  @Post('webhooks')
+  async registerWebhook(
+    @Body() dto: RegisterWebhookDto,
+    @Req() req: any, // In real app you'd have auth to get issuerAddress
+  ) {
+    // For now we can take issuerAddress from query or body
+    return this.invoicesService.registerWebhook({
+      issuerAddress: req.query.issuerAddress || dto.issuerAddress, // adjust based on your auth
+      ...dto,
+    });
+  }
 }
