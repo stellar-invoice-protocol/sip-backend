@@ -119,4 +119,20 @@ model Notification {
   @@index([type])
   @@index([sentAt])
   @@map("notifications")
+
+  // Webhook registration for external integrations (accounting tools, etc.)
+model Webhook {
+  id          String   @id @default(cuid())
+  issuerAddress String // Owner of the webhook
+  url         String   // Webhook endpoint
+  secret      String?  // Optional HMAC secret for signature verification
+  active      Boolean  @default(true)
+  events      String[] @default(["paid", "overdue", "cancelled"]) // Supported events
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([issuerAddress])
+  @@map("webhooks")
+}
 }
